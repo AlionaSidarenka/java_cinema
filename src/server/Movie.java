@@ -10,9 +10,9 @@ public class Movie {
     private String director;
     private int id;
     private Date length;
+    private float price;
 
-    Movie() {}
-    Movie(String title, int ageRestriction, String[] countries, String director, Date length) {
+    Movie(String title, int ageRestriction, String[] countries, String director, Date length, float price) {
         movieCount++;
         this.id = movieCount;
         this.title = title;
@@ -20,5 +20,10 @@ public class Movie {
         this.countries = countries;
         this.director = director;
         this.length = length;
+        this.price = price;
+    }
+
+    public float getPrice() {
+        return price;
     }
 }

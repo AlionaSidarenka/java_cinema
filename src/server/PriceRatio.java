@@ -11,7 +11,7 @@ enum PriceRatio {
         this.ratio = ratio;
     }
 
-    public float getValue() {
+    public float getFloatRatio() {
         return ratio;
     }
 }
