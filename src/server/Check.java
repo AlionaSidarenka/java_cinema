@@ -5,9 +5,11 @@ public class Check {
     Seat[] seats;
     Session session;
 
-    Check() {}
     Check(Seat[] seats, Session session) {
         this.seats = seats;
         this.session = session;
+        checkId++;
     }
+
+
 }

@@ -1,17 +1,19 @@
 package server;
 
+import java.math.BigDecimal;
+
 enum PriceRatio {
-    HIGH(1.2f),
-    MEDIUM(1.0f),
-    LOW(0.8f);
+    HIGH(BigDecimal.valueOf(1.2)),
+    MEDIUM(BigDecimal.valueOf(1)),
+    LOW(BigDecimal.valueOf(0.8));
 
-    private final float ratio;
+    private final BigDecimal ratio;
 
-    PriceRatio(float ratio) {
+    PriceRatio(BigDecimal ratio) {
         this.ratio = ratio;
     }
 
-    public float getFloatRatio() {
+    public BigDecimal getRatio() {
         return ratio;
     }
 }
