@@ -10,6 +10,4 @@ public class Check {
         this.session = session;
         checkId++;
     }
-
-
 }

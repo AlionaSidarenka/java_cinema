@@ -2,8 +2,16 @@ package server;
 
 import server.User.IUser;
 
-public interface OperatorTerminal {
-    public void reservePlace(IUser user, Session session, Seat ... seats);
+import java.util.Calendar;
+import java.util.List;
 
-    public void sellPlace(IUser user, Session session, Seat ... seats);
+public interface OperatorTerminal {
+     void reservePlace(IUser user, Session session, Seat ... seats);
+
+     void sellPlace(IUser user, Session session, Seat ... seats);
+
+     List<Session> getSessions(Calendar calendar);
+
+
+
 }

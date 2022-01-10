@@ -1,6 +1,5 @@
 package server;
 
-import server.User.IUser;
 import server.room.Room;
 
 import java.math.BigDecimal;

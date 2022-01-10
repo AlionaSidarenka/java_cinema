@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
+
 public class Movie {
     static int movieCount = 0;
     private String title;
@@ -91,4 +92,5 @@ public class Movie {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
 }
