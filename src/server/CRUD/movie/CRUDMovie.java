@@ -1,10 +1,14 @@
 package server.CRUD.movie;
 import server.CRUD.CRUD;
 import server.Movie;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 
 public class CRUDMovie implements CRUD<Movie> {
-
     private String moviesPath;
 
     public CRUDMovie(String moviesPath) {
@@ -20,62 +24,54 @@ public class CRUDMovie implements CRUD<Movie> {
     }
 
     @Override
-    public void create(Movie movie) throws MovieExistsException {
+    public void create(Movie movie) throws MovieExistsException, JAXBException {
         File file = new File(moviesPath + movie.getTitle() + ".xml");
-        if(!file.exists()){
-//            TODO uncomment when Maven dependency will be added
-//            TODO add try/catch if needed
-//            TODO add imports
-//            JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
-//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-//            // output pretty printed
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//            jaxbMarshaller.marshal(movie, file);
-        } else {
+        if(file.exists()){
             throw new MovieExistsException("\"" + movie.getTitle() + "\"", null, "Такой фильм уже существует");
+        } else {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(movie, file);
         }
     }
 
     @Override
-    public Movie read(String name) throws MovieNotFoundException {
-        File file = new File(moviesPath + name + ".xml");
-        if(file.exists()){
-//            TODO uncomment when Maven dependency will be added
-//            TODO add try/catch if needed
-//            TODO add imports
-//            JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
-//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-//            Movie movie = (Movie) jaxbUnmarshaller.unmarshal(file);
-//            return movie;
-        } else {
-            throw new MovieNotFoundException("Фильм \"" + name + "\" не найден");
-        }
-        return null;
+    public Movie read(String name) throws MovieNotFoundException, JAXBException {
+        File file = getFileOrThrowNotFound(name);
+
+        JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        Movie movie = (Movie) jaxbUnmarshaller.unmarshal(file);
+
+        return movie;
     }
 
     @Override
-    public void update(Movie movie) throws MovieNotFoundException {
-        File file = new File(moviesPath + movie.getTitle() + ".xml");
-        if(file.exists()){
-//            TODO uncomment when Maven dependency will be added
-//            TODO add try/catch if needed
-//            TODO add imports
-//            JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
-//            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-//            Movie movie = (Movie) jaxbUnmarshaller.unmarshal(file);
-//            return movie;
-        } else {
-            throw new MovieNotFoundException("Фильм \"" + movie.getTitle() + "\" не найден");
-        }
+    public void update(Movie movie) throws MovieNotFoundException, JAXBException {
+        File file = getFileOrThrowNotFound(movie.getTitle());
+
+        JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        // TODO update
+        // Movie movie = (Movie) jaxbUnmarshaller.unmarshal(file);
+
+        // return movie;
     }
 
     @Override
     public void delete(String name) throws MovieNotFoundException {
+        File file = getFileOrThrowNotFound(name);
+        file.delete();
+    }
+
+    private File getFileOrThrowNotFound(String name) throws MovieNotFoundException {
         File file = new File(moviesPath + name + ".xml");
-        if(file.exists()){
-            file.delete();
-        } else {
+        if (!file.exists()) {
             throw new MovieNotFoundException("Фильм \"" + name + "\" не найден");
         }
+        return file;
     }
 }

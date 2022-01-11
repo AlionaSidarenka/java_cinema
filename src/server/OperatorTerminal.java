@@ -10,8 +10,5 @@ public interface OperatorTerminal {
 
      void sellPlace(IUser user, Session session, Seat ... seats);
 
-     List<Session> getSessions(Calendar calendar);
-
-
-
+     // List<Session> getSessions(Calendar calendar);
 }

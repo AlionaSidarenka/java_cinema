@@ -2,7 +2,10 @@ package server;
 
 import server.User.IUser;
 
-public class OperatorTerminalImpl implements OperatorTerminal{
+import java.util.Calendar;
+import java.util.List;
+
+public class OperatorTerminalImpl implements OperatorTerminal {
 
     @Deprecated
     @Override
@@ -15,5 +18,8 @@ public class OperatorTerminalImpl implements OperatorTerminal{
         // TODO: тут остановился
     }
 
-
+/*    @Override
+    public List<Session> getSessions(Calendar calendar) {
+        // TODO: add
+    }*/
 }
