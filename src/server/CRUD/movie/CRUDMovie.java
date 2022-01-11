@@ -26,7 +26,7 @@ public class CRUDMovie implements CRUD<Movie> {
     @Override
     public void create(Movie movie) throws MovieExistsException, JAXBException {
         File file = new File(moviesPath + movie.getTitle() + ".xml");
-        if(file.exists()){
+        if (file.exists()) {
             throw new MovieExistsException("\"" + movie.getTitle() + "\"", null, "Такой фильм уже существует");
         } else {
             JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);

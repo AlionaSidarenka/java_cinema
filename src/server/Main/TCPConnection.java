@@ -7,32 +7,39 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class TCPConnection {
+public class TCPConnection implements Runnable {
     private Integer port;
     private ServerSocket serverSocket = null;
     private Socket clientAccepted = null;
     private ObjectInputStream sois = null;
     private ObjectOutputStream soos = null;
+    private Thread t;
+    private ScreenLogger screenLogger = ScreenLogger.getInstance();
+
     public TCPConnection(Integer port) {
         this.port = port;
+        t = new Thread(this, "Server thread");
+        t.start();
     }
 
-    public void connect() {
+    @Override
+    public void run() {
         try {
             serverSocket = new ServerSocket(this.port);
-            System.out.println("server starting....");
-            System.out.println("at IP=" + InetAddress.getLocalHost().getHostAddress());
-            System.out.println("at port=" + serverSocket.getLocalPort());
+            screenLogger.clear();
+            screenLogger.log("server starting....");
+            screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
+            screenLogger.log("at port=" + serverSocket.getLocalPort());
 
             clientAccepted = serverSocket.accept();
-            System.out.println("connection established....");
+            screenLogger.log("connection established....");
 
             sois = new ObjectInputStream(clientAccepted.getInputStream());
             soos = new ObjectOutputStream(clientAccepted.getOutputStream());
             String clientMessageRecieved = (String) sois.readObject();
 
             while (!clientMessageRecieved.equals("quite")) {
-                System.out.println("message recieved:" + clientMessageRecieved);
+                screenLogger.log("message recieved:" + clientMessageRecieved);
 
                 clientMessageRecieved = clientMessageRecieved.toUpperCase();
                 soos.writeObject(clientMessageRecieved);

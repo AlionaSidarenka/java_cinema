@@ -1,11 +1,18 @@
 package server.Main;
 import server.Session;
 
+import javax.swing.*;
+
 class Server {
     public static void main(String args[]) {
         Session session;
-        TCPConnection tcpConnection = new TCPConnection(2525);
-        tcpConnection.connect();
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new ServerTerminal();
+            frame.setTitle("Server");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        });
     }
 }
 
