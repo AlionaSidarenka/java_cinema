@@ -1,11 +1,16 @@
 package server.Main;
 
+import server.CRUD.movie.CRUDMovie;
+import server.Movie;
+
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.FileAlreadyExistsException;
 
 public class TCPConnection implements Runnable {
     private Integer port;
@@ -36,24 +41,34 @@ public class TCPConnection implements Runnable {
 
             sois = new ObjectInputStream(clientAccepted.getInputStream());
             soos = new ObjectOutputStream(clientAccepted.getOutputStream());
-            String clientMessageRecieved = (String) sois.readObject();
 
-            while (!clientMessageRecieved.equals("quite")) {
-                screenLogger.log("message recieved:" + clientMessageRecieved);
+            CRUDMovie crudMovie = new CRUDMovie("");
+            Movie movie = (Movie) sois.readObject();
 
-                clientMessageRecieved = clientMessageRecieved.toUpperCase();
-                soos.writeObject(clientMessageRecieved);
-                clientMessageRecieved = (String) sois.readObject();
+            while (movie != null) {
+                try {
+                    crudMovie.create(movie);
+                    screenLogger.log("added Movie....");
+                    soos.writeObject("added Movie....");
+                } catch (FileAlreadyExistsException e) {
+                    screenLogger.log(e.toString());
+                    soos.writeObject("movie was not added...");
+                }
+
+                screenLogger.log("waiting....");
+                movie = (Movie) sois.readObject();
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | JAXBException e) {
+            screenLogger.log(e.toString());
         } finally {
             try {
                 if (sois != null) sois.close();
                 if (soos != null) soos.close();
                 if (clientAccepted != null) clientAccepted.close();
                 if (serverSocket != null) serverSocket.close();
+                screenLogger.log("Closed socket and client");
             } catch (IOException e) {
-                System.out.println("Ресурсы не закрыты!!!");
+                screenLogger.log("Resources are not closed");
             }
         }
     }

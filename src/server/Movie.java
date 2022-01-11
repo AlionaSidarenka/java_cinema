@@ -1,11 +1,14 @@
 package server;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-
-public class Movie {
+@XmlRootElement
+public class Movie implements Serializable {
+    private static final long serialVersionUID = 6529685098267757690L;
     static int movieCount = 0;
     private String title;
     private int ageRestriction;
@@ -25,6 +28,8 @@ public class Movie {
         this.length = length;
         this.price = price;
     }
+
+    public Movie() {}
 
     public Movie(String title, int ageRestriction, String director, Calendar length, double price, String ... countries) {
         movieCount++;

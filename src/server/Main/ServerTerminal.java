@@ -15,7 +15,7 @@ public class ServerTerminal extends JFrame {
         this.setSize(600, 400);
 
         JPanel p = new JPanel();
-        screenLogger = ScreenLogger.init(5, 30);
+        screenLogger = ScreenLogger.init(18, 45);
         b = new JButton("submit");
 
         p.add(l);
