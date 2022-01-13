@@ -30,15 +30,12 @@ public class TCPConnection implements Runnable {
             screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
             screenLogger.log("at port=" + serverSocket.getLocalPort());
 
-            while (true) {
-                clientAccepted = serverSocket.accept();
-                screenLogger.log("connection established....");
-                APIService service = new APIService(clientAccepted);
-            }
+            this.connect();
         } catch (IOException e) {
             screenLogger.log(e.toString());
             try {
                 clientAccepted.close();
+                this.connect();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -47,10 +44,25 @@ public class TCPConnection implements Runnable {
                 if (sois != null) sois.close();
                 if (soos != null) soos.close();*/
                 if (clientAccepted != null) clientAccepted.close();
-                if (serverSocket != null) serverSocket.close();
                 screenLogger.log("Closed socket and client");
             } catch (IOException e) {
                 screenLogger.log("Resources are not closed");
+            }
+        }
+    }
+
+    private void connect() {
+        while (true) {
+            try {
+                clientAccepted = serverSocket.accept();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            screenLogger.log("connection established....");
+            try {
+                APIService service = new APIService(clientAccepted);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
