@@ -1,23 +1,28 @@
 package server.Main;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import server.CRUD.movie.CRUDMovie;
 import server.Movie;
+import server.Session;
 
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.FileAlreadyExistsException;
+import java.util.List;
+import java.util.Map;
+
 
 public class TCPConnection implements Runnable {
     private Integer port;
     private ServerSocket serverSocket = null;
     private Socket clientAccepted = null;
-    private ObjectInputStream sois = null;
-    private ObjectOutputStream soos = null;
+    private BufferedReader sois = null;
+    private BufferedWriter soos = null;
     private Thread t;
     private ScreenLogger screenLogger = ScreenLogger.getInstance();
 
@@ -30,19 +35,34 @@ public class TCPConnection implements Runnable {
     @Override
     public void run() {
         try {
+            // interface and class for requests
+            //
             serverSocket = new ServerSocket(this.port);
             screenLogger.clear();
             screenLogger.log("server starting....");
             screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
             screenLogger.log("at port=" + serverSocket.getLocalPort());
 
-            clientAccepted = serverSocket.accept();
-            screenLogger.log("connection established....");
+            ObjectMapper objectMapper = new ObjectMapper();
+            // Map<String, List<Session>> listSessions = objectMapper.readValue(new File("src/data/sessions/1.json"), new TypeReference<Map<String, List<Session>>>(){});
+            JsonNode listSessions = objectMapper.readTree(new File("src/data/sessions/1.json"));
 
-            sois = new ObjectInputStream(clientAccepted.getInputStream());
-            soos = new ObjectOutputStream(clientAccepted.getOutputStream());
+            while (true) {
+                clientAccepted = serverSocket.accept();
+                screenLogger.log("connection established....");
 
-            CRUDMovie crudMovie = new CRUDMovie("");
+                soos = new BufferedWriter(new OutputStreamWriter(clientAccepted.getOutputStream()));
+                sois = new BufferedReader(new InputStreamReader(clientAccepted.getInputStream()));
+
+                String request = sois.readLine();
+                soos.write(listSessions.get("data").toString());
+
+                soos.newLine();
+                soos.flush();
+                soos.close();
+                sois.close();
+            }
+            /*CRUDMovie crudMovie = new CRUDMovie("");
             Movie movie = (Movie) sois.readObject();
 
             while (movie != null) {
@@ -57,8 +77,8 @@ public class TCPConnection implements Runnable {
 
                 screenLogger.log("waiting....");
                 movie = (Movie) sois.readObject();
-            }
-        } catch (IOException | ClassNotFoundException | JAXBException e) {
+            }*/
+        } catch (IOException e) {
             screenLogger.log(e.toString());
         } finally {
             try {
@@ -73,3 +93,6 @@ public class TCPConnection implements Runnable {
         }
     }
 }
+
+// sendRequest
+// get

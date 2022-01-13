@@ -29,7 +29,7 @@ public class Movie implements Serializable {
         this.price = price;
     }
 
-    public Movie() {}
+    private Movie() {}
 
     public Movie(String title, int ageRestriction, String director, Calendar length, double price, String ... countries) {
         movieCount++;
