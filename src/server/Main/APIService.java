@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 
 public class APIService {
     Socket clientAccepted = null;
@@ -25,11 +26,13 @@ public class APIService {
 
             try {
                 request = sois.readLine();
+                ObjectMapper objectMapper = new ObjectMapper();
+                Request<Object> map = objectMapper.readValue(request, Request.class);
 
-                if (request != null) {
-                    if (request.equals("getSessions")) {
+                if (map != null) {
+                    if (map.getUrl().equals("getSessions")) {
                         this.loadData("src/data/sessions/1.json");
-                    } else if (request.equals("getMovies")) {
+                    } else if (map.getUrl().equals("getMovies")) {
                         this.loadData("src/data/movies/1.json");
                     }
                 }
@@ -42,11 +45,11 @@ public class APIService {
 
     public void loadData(String filepath) {
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode listSessions = null;
+        JsonNode data = null;
 
         try {
-            listSessions = objectMapper.readTree(new File(filepath));
-            soos.write(listSessions.get("data").toString());
+            data = objectMapper.readTree(new File(filepath));
+            soos.write(data.get("data").toString());
             soos.newLine();
             soos.flush();
         } catch (IOException e) {
