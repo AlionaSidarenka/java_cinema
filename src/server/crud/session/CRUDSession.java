@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CRUDSession implements CRUD<Session> {
-    private static final String SESSIONS_PATH = "src" + File.separator + "resources" + File.separator + "sessions";
+    private static final String SESSIONS_PATH = "src" + File.separator + "resources" + File.separator + "sessions" + File.separator;
     private static final String FILE_PATTERN = "YYYY-MM-DD HH:MM";
 
     public CRUDSession() {

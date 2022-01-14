@@ -4,14 +4,18 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import server.Session;
+import server.crud.session.CRUDSession;
 
+import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 public class APIService {
     Socket clientAccepted = null;
     private BufferedReader sois = null;
     private BufferedWriter soos = null;
+    private CRUDSession sessionsOperations = new CRUDSession();
 
     public APIService(Socket clientAccepted) throws IOException {
         this.clientAccepted = clientAccepted;
@@ -32,8 +36,15 @@ public class APIService {
 
                 if (map != null) {
                     if (map.getUrl().equals("getSessions")) {
-                        this.loadData("src/data/sessions/1.json");
+                        //this.loadData("src/data/sessions/1.json");
+                        List<Session> sessions = sessionsOperations.readByDay(map.getParams().get("date"));
+                        Response<List<Session>> response = new Response<>("Ok", "Сработало!!!!", sessions);
+                        ObjectMapper om = new ObjectMapper();
+                        soos.write(om.writeValueAsString(response));
+
+
                     } else if (map.getUrl().equals("getMovies")) {
+
                         this.loadData("src/data/movies/1.json");
                     } else if (map.getUrl().equals("updateSession")) {
                         // JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, Session.class);
@@ -49,6 +60,8 @@ public class APIService {
             } catch (IOException e) {
                 e.printStackTrace();
                 break;
+            } catch (JAXBException e) {
+                e.printStackTrace();
             }
         }
     }

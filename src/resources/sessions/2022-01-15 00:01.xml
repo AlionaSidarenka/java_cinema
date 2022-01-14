@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<session>
+    <movie>
+        <ageRestriction>13</ageRestriction>
+        <countries>person</countries>
+        <director>string</director>
+        <id>5</id>
+        <length>0001-12-31T02:12:13.256+03:00</length>
+        <price>0.0000000012</price>
+        <title>4 title</title>
+    </movie>
+    <room/>
+</session>

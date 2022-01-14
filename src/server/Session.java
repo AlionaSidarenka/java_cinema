@@ -3,10 +3,12 @@ package server;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import server.room.Room;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
+@XmlRootElement
 public class Session {
     static int sessionCount = 0;
     private Room room;
