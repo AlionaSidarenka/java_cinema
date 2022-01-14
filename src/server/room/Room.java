@@ -20,6 +20,19 @@ public class Room {
                 seats[i][j] = new Seat(i, j);
             }
         }
+        this.name = name;
+    }
+
+    public Seat[][] getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Seat[][] seats) {
+        this.seats = seats;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getName() {

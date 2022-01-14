@@ -3,7 +3,9 @@ package server;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import server.room.Room;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -50,12 +52,16 @@ public class Session {
     public int getId() {
         return id;
     }
-
+    @XmlJavaTypeAdapter(value = LocalDateTimeAdapter.class)
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
 
-    /*public BigDecimal getPrice() {
+    public void setStartDateTime(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+    }
+
+/*public BigDecimal getPrice() {
         BigDecimal ratio = getDateRatio(getStartDateTime());
         return movie.getPrice().multiply(ratio);
     }
