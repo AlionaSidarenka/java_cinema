@@ -2,7 +2,7 @@
   "data": [{
     "title": "movieTitle1",
     "ageRestriction": 18,
-    "director": "Steven Sigal",
+    "director": "Steven Segal",
     "length": 20000,
     "price": 88888888.5678901,
     "countries": [

@@ -1,11 +1,18 @@
 package server.room;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import server.Seat;
 
+@JsonDeserialize(as = Room.class)
 public class Room {
+    @JsonProperty("seats")
     Seat[][] seats;
 
-    public Room(int[] places) {
+    @JsonProperty("name")
+    private String name;
+
+    public Room(int[] places, String name) {
         seats = new Seat[places.length][];
         for (int i = 0; i < places.length; i++) {
             seats[i] = new Seat[places[i]];
@@ -14,4 +21,10 @@ public class Room {
             }
         }
     }
+
+    public String getName() {
+        return this.name;
+    }
+
+    private Room(){}
 }

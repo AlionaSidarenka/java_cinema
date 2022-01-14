@@ -1,12 +1,14 @@
 package server;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-@XmlRootElement
+@JsonDeserialize(as = Movie.class)
 public class Movie implements Serializable {
     private static final long serialVersionUID = 6529685098267757690L;
     static int movieCount = 0;

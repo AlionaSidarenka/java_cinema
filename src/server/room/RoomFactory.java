@@ -16,7 +16,7 @@ public class RoomFactory {
     public Room getRoom(RoomType roomType){
         switch (roomType){
             case A -> {
-                Room room = new Room(new int[]{15,18,18,18,17,17,16,16,15,19});
+                Room room = new Room(new int[]{15,18,18,18,17,17,16,16,15,19}, "Green");
                 return room;
             }
             default -> {
