@@ -38,11 +38,13 @@ public class APIService {
                     if (map.getUrl().equals("getSessions")) {
                         //this.loadData("src/data/sessions/1.json");
                         List<Session> sessions = sessionsOperations.readByDay(map.getParams().get("date"));
-                        Response<List<Session>> response = new Response<>("Ok", "Сработало!!!!", sessions);
-                        ObjectMapper om = new ObjectMapper();
+                        Response<List<Session>> response = new Response<>("Ok", "Works!!!!", sessions);
+
+
+                        ObjectMapper om = new ObjectMapper().registerModule(new JavaTimeModule());
                         soos.write(om.writeValueAsString(response));
-
-
+                        soos.newLine();
+                        soos.flush();
                     } else if (map.getUrl().equals("getMovies")) {
 
                         this.loadData("src/data/movies/1.json");
