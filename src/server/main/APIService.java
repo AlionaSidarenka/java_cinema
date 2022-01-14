@@ -1,6 +1,5 @@
-package server.Main;
+package server.main;
 
-import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -8,8 +7,6 @@ import server.Session;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
-import java.util.Map;
 
 public class APIService {
     Socket clientAccepted = null;

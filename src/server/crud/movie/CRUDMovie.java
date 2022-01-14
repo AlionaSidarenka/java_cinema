@@ -1,5 +1,5 @@
-package server.CRUD.movie;
-import server.CRUD.CRUD;
+package server.crud.movie;
+import server.crud.CRUD;
 import server.Movie;
 
 import javax.xml.bind.JAXBContext;

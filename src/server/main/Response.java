@@ -1,4 +1,4 @@
-package server.Main;
+package server.main;
 
 public class Response<T> {
     private String status;

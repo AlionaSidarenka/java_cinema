@@ -1,4 +1,4 @@
-package server.CRUD.movie;
+package server.crud.movie;
 
 import java.nio.file.FileAlreadyExistsException;
 

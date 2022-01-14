@@ -1,4 +1,4 @@
-package server.CRUD;
+package server.crud;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;

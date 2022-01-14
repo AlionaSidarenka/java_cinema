@@ -1,7 +1,5 @@
-package server.Main;
+package server.main;
 import server.Session;
-
-import javax.swing.*;
 
 class Server {
     public static void main(String args[]) {
