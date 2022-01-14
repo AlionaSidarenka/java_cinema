@@ -11,7 +11,7 @@ public class TCPConnection implements Runnable {
     private ServerSocket serverSocket = null;
     private Socket clientAccepted = null;
     private Thread t;
-    private ScreenLogger screenLogger = ScreenLogger.getInstance();
+//    private ScreenLogger screenLogger = ScreenLogger.getInstance();
 
     public TCPConnection(Integer port) {
         this.port = port;
@@ -25,14 +25,18 @@ public class TCPConnection implements Runnable {
             // interface and class for requests
             //
             serverSocket = new ServerSocket(this.port);
-            screenLogger.clear();
-            screenLogger.log("server starting....");
-            screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
-            screenLogger.log("at port=" + serverSocket.getLocalPort());
+//            screenLogger.clear();
+//            screenLogger.log("server starting....");
+//            screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
+//            screenLogger.log("at port=" + serverSocket.getLocalPort());
+
+            System.out.println("server starting....");
+            System.out.println("at IP=" + InetAddress.getLocalHost().getHostAddress());
+            System.out.println("at port=" + serverSocket.getLocalPort());
 
             this.connect();
         } catch (IOException e) {
-            screenLogger.log(e.toString());
+            System.out.println(e.toString());
             try {
                 clientAccepted.close();
                 this.connect();
@@ -44,9 +48,9 @@ public class TCPConnection implements Runnable {
                 if (sois != null) sois.close();
                 if (soos != null) soos.close();*/
                 if (clientAccepted != null) clientAccepted.close();
-                screenLogger.log("Closed socket and client");
+                System.out.println("Closed socket and client");
             } catch (IOException e) {
-                screenLogger.log("Resources are not closed");
+                System.out.println("Resources are not closed");
             }
         }
     }
@@ -58,7 +62,7 @@ public class TCPConnection implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            screenLogger.log("connection established....");
+            System.out.println("connection established....");
             try {
                 APIService service = new APIService(clientAccepted);
             } catch (IOException e) {
