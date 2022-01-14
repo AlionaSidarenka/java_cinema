@@ -1,4 +1,4 @@
-package server.User;
+package server.user;
 
 public class User implements IUser {
     private String lastName;

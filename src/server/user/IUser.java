@@ -1,4 +1,4 @@
-package server.User;
+package server.user;
 
 public interface IUser {
     public String getLastName();

@@ -1,16 +1,21 @@
 package server.main;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@XmlRootElement
 public class Request<T> implements Serializable {
+
     private String method;
     private String url;
     private Map<String, String> params = new HashMap<String, String>();
     private T data;
 
-    private Request() {}
+    private Request() {
+
+    }
 
     public Request(String method, String url) {
         this.method = method;
@@ -46,6 +51,22 @@ public class Request<T> implements Serializable {
 
     public T getData() {
         return this.data;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public void setUrl(String url) {
+       this.url = url;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 
     public Map<String, String> getParams() {

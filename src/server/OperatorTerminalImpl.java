@@ -1,9 +1,6 @@
 package server;
 
-import server.User.IUser;
-
-import java.util.Calendar;
-import java.util.List;
+import server.user.IUser;
 
 public class OperatorTerminalImpl implements OperatorTerminal {
 

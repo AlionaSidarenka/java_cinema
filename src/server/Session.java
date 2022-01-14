@@ -1,13 +1,8 @@
 package server;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import server.room.Room;
-
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 @XmlRootElement
@@ -17,7 +12,6 @@ public class Session {
     private Movie movie;
     private int id;
 
-    @JsonProperty("startDateTime")
     private LocalDateTime startDateTime;
 
     private Session() {
