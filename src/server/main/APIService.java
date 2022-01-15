@@ -2,54 +2,36 @@ package server.main;
 
 import server.Session;
 import server.crud.session.CRUDSession;
-import server.crud.session.SessionNotFoundException;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.Socket;
 import java.util.List;
 
 public class APIService {
     Socket clientAccepted = null;
-    private InputStream inputStream = null;
-    private OutputStream outputStream = null;
+    private ObjectInputStream objectInputStream = null;
+    private ObjectOutputStream objectOutputStream = null;
     private CRUDSession sessionsOperations = new CRUDSession();
 
     public APIService(Socket clientAccepted) throws IOException {
         this.clientAccepted = clientAccepted;
-        inputStream = clientAccepted.getInputStream();
-        outputStream = clientAccepted.getOutputStream();
+        objectInputStream = new ObjectInputStream(clientAccepted.getInputStream());
+        objectOutputStream = new ObjectOutputStream(clientAccepted.getOutputStream());
         listen();
-    }
-
-    protected static <T> T unmarshall(String xml, Class<T> clazz)
-            throws JAXBException {
-        JAXBContext jc = JAXBContext.newInstance(clazz);
-        Unmarshaller unmarshaller = jc.createUnmarshaller();
-        T obj = clazz.cast(unmarshaller.unmarshal(new StringReader(xml)));
-        return obj;
     }
 
     public void listen() {
         try {
-
-            JAXBContext jaxbContext = JAXBContext.newInstance(Request.class);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-
-            Request request = (Request) unmarshaller.unmarshal(inputStream);
+            Request request = (Request) objectInputStream.readObject();
 
             if (request != null) {
                 if (request.getUrl().equals("getSessions")) {
                     //this.loadData("src/data/sessions/1.json");
                     List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
                     Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
-                    Marshaller marshaller = JAXBContext.newInstance(Response.class).createMarshaller();
-                    marshaller.marshal(response, outputStream);
-                    clientAccepted.shutdownOutput();
+                    objectOutputStream.writeObject(response);
+                    objectOutputStream.flush();
 
 //                    } else if (map.getUrl().equals("getMovies")) {
 //
@@ -65,11 +47,9 @@ public class APIService {
 //                        soos.flush();
                 }
             }
-        } catch (JAXBException e) {
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
-        } catch (SessionNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 

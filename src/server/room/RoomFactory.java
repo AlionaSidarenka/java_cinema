@@ -19,6 +19,10 @@ public class RoomFactory {
                 Room room = new Room(new int[]{15,18,18,18,17,17,16,16,15,19}, "Green");
                 return room;
             }
+            case B -> {
+                Room room = new Room(new int[]{4,5}, "Green");
+                return room;
+            }
             default -> {
                 return null;
             }

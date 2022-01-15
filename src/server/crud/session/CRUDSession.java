@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CRUDSession implements CRUD<Session> {
     private static final String SESSIONS_PATH = "src" + File.separator + "resources" + File.separator + "sessions" + File.separator;
-    private static final String FILE_PATTERN = "YYYY-MM-DD HH:MM";
+    private static final String FILE_PATTERN = "YYYY-MM-DD HH-mm";
 
     public CRUDSession() {
     }
@@ -43,7 +43,7 @@ public class CRUDSession implements CRUD<Session> {
     }
 
     @Override
-    // name pattern "2022-12-03 12:20"
+    // name pattern "2022-12-03 12-20"
     public Session read(String name) throws SessionNotFoundException, JAXBException {
         File file = getFileOrThrowNotFound(name);
         JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
