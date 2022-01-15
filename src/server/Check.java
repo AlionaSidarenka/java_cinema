@@ -1,5 +1,8 @@
 package server;
 
+import cinema.model.Seat;
+import cinema.model.Session;
+
 public class Check {
     static int checkId = 0;
     Seat[] seats;

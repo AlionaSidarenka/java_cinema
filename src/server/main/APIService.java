@@ -1,6 +1,8 @@
 package server.main;
 
-import server.Session;
+import cinema.connection.Request;
+import cinema.connection.Response;
+import cinema.model.Session;
 import server.crud.session.CRUDSession;
 
 import javax.xml.bind.JAXBException;
@@ -16,23 +18,26 @@ public class APIService {
 
     public APIService(Socket clientAccepted) throws IOException {
         this.clientAccepted = clientAccepted;
-        objectInputStream = new ObjectInputStream(clientAccepted.getInputStream());
         objectOutputStream = new ObjectOutputStream(clientAccepted.getOutputStream());
+        objectOutputStream.flush();
+
+        objectInputStream = new ObjectInputStream(clientAccepted.getInputStream());
         listen();
     }
 
     public void listen() {
-        try {
-            Request request = (Request) objectInputStream.readObject();
+        while (this.clientAccepted.isConnected()) {
+            try {
+                Request request = (Request) objectInputStream.readObject();
 
-            if (request != null) {
-                if (request.getUrl().equals("getSessions")) {
-                    //this.loadData("src/data/sessions/1.json");
-                    List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
-                    Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
-                    objectOutputStream.writeObject(response);
-                    objectOutputStream.flush();
-
+                if (request != null) {
+                    if (request.getUrl().equals("getSessions")) {
+                        //this.loadData("src/data/sessions/1.json");
+                        List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
+                        Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
+                        objectOutputStream.writeObject(response);
+                        // objectOutputStream.flush();
+                        request = (Request) objectInputStream.readObject();
 //                    } else if (map.getUrl().equals("getMovies")) {
 //
 //                        this.loadData("src/data/movies/1.json");
@@ -45,12 +50,13 @@ public class APIService {
 //                        soos.write(objectMapper.writeValueAsString(new Response("200", "OK")));
 //                        soos.newLine();
 //                        soos.flush();
+                    }
                 }
+            } catch (JAXBException | IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-        } catch (JAXBException | IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
 
 //    public void loadData(String filepath) {

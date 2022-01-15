@@ -1,6 +1,6 @@
 package server.crud.movie;
+import cinema.model.Movie;
 import server.crud.CRUD;
-import server.Movie;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

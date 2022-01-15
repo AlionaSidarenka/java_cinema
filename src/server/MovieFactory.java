@@ -1,10 +1,11 @@
 package server;
 
+import cinema.model.Movie;
+
 import java.math.BigDecimal;
 import java.util.Calendar;
 
 public class MovieFactory {
-
     private static int counter = 0;
 
     private static Calendar calendar = Calendar.getInstance();

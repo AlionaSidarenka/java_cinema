@@ -1,5 +1,7 @@
 package server.room;
 
+import cinema.model.Room;
+
 public class RoomFactory {
 
     private static RoomFactory roomFactory;

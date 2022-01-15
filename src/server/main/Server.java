@@ -1,5 +1,5 @@
 package server.main;
-import server.Session;
+import cinema.model.Session;
 
 class Server {
     public static void main(String args[]) {

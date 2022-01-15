@@ -1,6 +1,6 @@
 package server.crud.session;
 
-import server.Session;
+import cinema.model.Session;
 import server.crud.CRUD;
 
 import javax.xml.bind.JAXBContext;

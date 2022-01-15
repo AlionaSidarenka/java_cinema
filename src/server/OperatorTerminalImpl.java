@@ -1,12 +1,14 @@
 package server;
 
+import cinema.model.Seat;
+import cinema.model.Session;
 import server.user.IUser;
 
 public class OperatorTerminalImpl implements OperatorTerminal {
 
     @Deprecated
     @Override
-    public void reservePlace(IUser user, Session session, Seat ... seats) {
+    public void reservePlace(IUser user, Session session, Seat... seats) {
         //todo threads can be here
     }
 
