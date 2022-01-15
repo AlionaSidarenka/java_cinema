@@ -62,8 +62,8 @@ public class CRUDMovie implements CRUD<Movie> {
     }
 
     @Override
-    public void delete(String name) throws MovieNotFoundException {
-        File file = getFileOrThrowNotFound(name);
+    public void delete(Movie movie) throws MovieNotFoundException {
+        File file = getFileOrThrowNotFound(movie.getTitle());
         file.delete();
     }
 
