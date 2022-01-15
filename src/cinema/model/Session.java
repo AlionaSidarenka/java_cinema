@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @XmlRootElement
-public class Session implements Serializable {
-    private static final long SERIAL_VERSION_UID = 7966972753466200798L;
+public class Session implements java.io.Externalizable {
     private static int sessionCount = 0;
     @Getter
     @Setter
@@ -42,6 +41,10 @@ public class Session implements Serializable {
         return this.startDateTime;
     }
 
+    public void setStartDateTime(LocalDateTime date) {
+        this.startDateTime.set(date);
+    }
+
     public void setStartDateTime(LocalDate date, Integer hours, Integer minutes) {
         this.startDateTime.set(LocalDateTime.of(date, LocalTime.of(hours, minutes)));
     }
@@ -52,6 +55,20 @@ public class Session implements Serializable {
 
     public LocalDateTime getStartDateTime() {
         return this.startDateTime.get();
+    }
+
+    @Override
+    public void writeExternal(java.io.ObjectOutput out) throws java.io.IOException {
+        out.writeObject(getStartDateTime());
+        out.writeObject(getMovie());
+        out.writeObject(getRoom());
+    }
+
+    @Override
+    public void readExternal(java.io.ObjectInput in) throws java.io.IOException, ClassNotFoundException {
+        setStartDateTime((LocalDateTime) in.readObject());
+        setMovie((Movie) in.readObject());
+        setRoom((Room) in.readObject());
     }
 
 

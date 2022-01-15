@@ -5,6 +5,7 @@ import cinema.connection.Response;
 import cinema.model.Session;
 import server.crud.session.CRUDSession;
 
+
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.Socket;
@@ -26,18 +27,17 @@ public class APIService {
     }
 
     public void listen() {
-        while (this.clientAccepted.isConnected()) {
-            try {
-                Request request = (Request) objectInputStream.readObject();
+        try {
+            Request request = (Request) objectInputStream.readObject();
 
-                if (request != null) {
-                    if (request.getUrl().equals("getSessions")) {
-                        //this.loadData("src/data/sessions/1.json");
-                        List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
-                        Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
-                        objectOutputStream.writeObject(response);
-                        // objectOutputStream.flush();
-                        request = (Request) objectInputStream.readObject();
+            while (request != null) {
+                if (request.getUrl().equals("getSessions")) {
+                    //this.loadData("src/data/sessions/1.json");
+                    List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
+                    Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
+                    objectOutputStream.writeObject(response);
+                    // objectOutputStream.flush();
+                    request = (Request) objectInputStream.readObject();
 //                    } else if (map.getUrl().equals("getMovies")) {
 //
 //                        this.loadData("src/data/movies/1.json");
@@ -50,13 +50,12 @@ public class APIService {
 //                        soos.write(objectMapper.writeValueAsString(new Response("200", "OK")));
 //                        soos.newLine();
 //                        soos.flush();
-                    }
                 }
-            } catch (JAXBException | IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
+        } catch (JAXBException | IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
 //    public void loadData(String filepath) {

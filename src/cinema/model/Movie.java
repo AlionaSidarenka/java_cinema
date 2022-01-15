@@ -10,10 +10,8 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 @XmlRootElement
-public class Movie implements Serializable {
-    private static final long SERIAL_VERSION_UID = 6529685098267757690L;
+public class Movie implements java.io.Externalizable {
     private static int movieCount = 0;
-    @Setter
     private SimpleStringProperty title;
     @Getter
     @Setter
@@ -53,7 +51,7 @@ public class Movie implements Serializable {
         this.price = BigDecimal.valueOf(price);
     }
 
-    Movie(){
+    public Movie(){
         this.title = new SimpleStringProperty("");
     }
 
@@ -67,7 +65,31 @@ public class Movie implements Serializable {
         return title.toString();
     }
 
+    @Override
+    public void writeExternal(java.io.ObjectOutput out) throws java.io.IOException {
+        out.writeObject(getTitle());
+        out.writeInt(getAgeRestriction());
+        out.writeChars(getDirector());
+        out.writeObject(getLength());
+        out.writeObject(getPrice());
+        out.writeObject(getCountries());
+    }
+
+    @Override
+    public void readExternal(java.io.ObjectInput in) throws java.io.IOException, ClassNotFoundException {
+        setTitle((String)in.readObject());
+        setAgeRestriction((Integer) in.readInt());
+        setDirector((String) in.readLine());
+        setLength((Calendar) in.readObject());
+        setPrice((BigDecimal) in.readObject());
+        setCountries((String[]) in.readObject());
+    }
+
     public String getTitle() {
         return title.get();
+    }
+
+    public void setTitle(String title) {
+        this.title.set(title);
     }
 }
