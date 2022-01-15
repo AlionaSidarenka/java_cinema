@@ -29,28 +29,26 @@ public class APIService {
     public void listen() {
         try {
             Request request = (Request) objectInputStream.readObject();
+            // TODO: 1/15/22 error handling by response
 
             while (request != null) {
                 if (request.getUrl().equals("getSessions")) {
-                    //this.loadData("src/data/sessions/1.json");
                     List<Session> sessions = sessionsOperations.readByDay((String) request.getParams().get("date"));
-                    Response<List<Session>> response = new Response("Ok", "Works!!!!", sessions);
+                    Response<List<Session>> response = new Response("ok", "sessions was send", sessions);
                     objectOutputStream.writeObject(response);
-                    // objectOutputStream.flush();
-                    request = (Request) objectInputStream.readObject();
-//                    } else if (map.getUrl().equals("getMovies")) {
-//
-//                        this.loadData("src/data/movies/1.json");
-//                    } else if (map.getUrl().equals("updateSession")) {
-//                        // JavaType type = objectMapper.getTypeFactory().constructParametricType(List.class, Session.class);
-//                        // Session result = objectMapper.readValue(objectMapper.writeValueAsString(map.getData()), Session.class);
-//                        Session result = objectMapper.readValue(objectMapper.writeValueAsString(map.getData()), Session.class);
-//                        objectMapper.writeValue(new File("src/data/sessions/2.json"), result);
-//
-//                        soos.write(objectMapper.writeValueAsString(new Response("200", "OK")));
-//                        soos.newLine();
-//                        soos.flush();
+                } else if (request.getUrl().equals("addSession")) {
+                    sessionsOperations.create((Session)request.getData());
+                    Response response = new Response("Ok", "session was successfully added");
+                } else if (request.getUrl().equals("updateSession")) {
+                    sessionsOperations.update((Session)request.getData());
+                    Response response = new Response("Ok", "session was successfully updated");
+                } else if (request.getUrl().equals("deleteSession")) {
+                    sessionsOperations.delete((String) request.getParams().get("date"));
+                    Response response = new Response("Ok", "session was successfully updated");
                 }
+                // objectOutputStream.flush();
+                request = (Request) objectInputStream.readObject();
+
             }
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
