@@ -88,11 +88,12 @@ public class CRUDSession implements CRUD<Session> {
     @Override
     public void delete(String name) throws SessionNotFoundException {
         File file = getFileOrThrowNotFound(name);
+
         file.delete();
     }
 
     private File getFileOrThrowNotFound(String name) throws SessionNotFoundException {
-        File file = new File(SESSIONS_PATH + name + ".xml");
+        File file = new File(SESSIONS_PATH + File.separator + name + File.separator + ".xml");
         if (!file.exists()) {
             throw new SessionNotFoundException("Сессия \"" + name + "\" не существует");
         }

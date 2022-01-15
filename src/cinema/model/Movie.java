@@ -69,7 +69,7 @@ public class Movie implements java.io.Externalizable {
     public void writeExternal(java.io.ObjectOutput out) throws java.io.IOException {
         out.writeObject(getTitle());
         out.writeInt(getAgeRestriction());
-        out.writeChars(getDirector());
+        out.writeUTF(getDirector());
         out.writeObject(getLength());
         out.writeObject(getPrice());
         out.writeObject(getCountries());
@@ -79,7 +79,7 @@ public class Movie implements java.io.Externalizable {
     public void readExternal(java.io.ObjectInput in) throws java.io.IOException, ClassNotFoundException {
         setTitle((String)in.readObject());
         setAgeRestriction((Integer) in.readInt());
-        setDirector((String) in.readLine());
+        setDirector((String) in.readUTF());
         setLength((Calendar) in.readObject());
         setPrice((BigDecimal) in.readObject());
         setCountries((String[]) in.readObject());

@@ -27,8 +27,10 @@ public class APIService {
     }
 
     public void listen() {
+        Request request = null;
+
         try {
-            Request request = (Request) objectInputStream.readObject();
+            request = (Request) objectInputStream.readObject();
             // TODO: 1/15/22 error handling by response
 
             while (request != null) {
@@ -39,12 +41,15 @@ public class APIService {
                 } else if (request.getUrl().equals("addSession")) {
                     sessionsOperations.create((Session)request.getData());
                     Response response = new Response("Ok", "session was successfully added");
+                    objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("updateSession")) {
                     sessionsOperations.update((Session)request.getData());
                     Response response = new Response("Ok", "session was successfully updated");
+                    objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("deleteSession")) {
                     sessionsOperations.delete((String) request.getParams().get("date"));
                     Response response = new Response("Ok", "session was successfully updated");
+                    objectOutputStream.writeObject(response);
                 }
                 // objectOutputStream.flush();
                 request = (Request) objectInputStream.readObject();
@@ -52,8 +57,24 @@ public class APIService {
             }
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
+            Response response = new Response("NOT OK", e.getMessage());
+            try {
+                objectOutputStream.writeObject(response);
+                request = (Request) objectInputStream.readObject();
+            } catch (IOException err) {
+                err.printStackTrace();
+            } catch (ClassNotFoundException classNotFoundException) {
+                classNotFoundException.printStackTrace();
+            }
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            Response response = new Response("404", "NOT FOUND");
+            try {
+                objectOutputStream.writeObject(response);
+            } catch (IOException err) {
+                err.printStackTrace();
+            }
         }
 
 //    public void loadData(String filepath) {
