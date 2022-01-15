@@ -4,10 +4,12 @@ import javafx.beans.property.SimpleStringProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
+@XmlRootElement
 public class Movie implements Serializable {
     private static final long SERIAL_VERSION_UID = 6529685098267757690L;
     private static int movieCount = 0;

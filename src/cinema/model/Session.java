@@ -6,11 +6,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@XmlRootElement
 public class Session implements Serializable {
     private static final long SERIAL_VERSION_UID = 7966972753466200798L;
     private static int sessionCount = 0;
