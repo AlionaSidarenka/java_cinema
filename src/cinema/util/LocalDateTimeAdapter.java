@@ -1,4 +1,4 @@
-package server;
+package cinema.util;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDateTime;
@@ -16,6 +16,4 @@ public class LocalDateTimeAdapter
     public String marshal(LocalDateTime v) throws Exception {
         return v.toString();
     }
-
-
 }

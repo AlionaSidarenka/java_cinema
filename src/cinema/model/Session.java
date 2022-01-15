@@ -53,6 +53,7 @@ public class Session implements java.io.Externalizable {
         this.startDateTime.set(DateUtil.parse(str));
     }
 
+    @javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value = cinema.util.LocalDateTimeAdapter.class)
     public LocalDateTime getStartDateTime() {
         return this.startDateTime.get();
     }
