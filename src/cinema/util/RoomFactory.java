@@ -1,4 +1,4 @@
-package server.room;
+package cinema.util;
 
 import cinema.model.Room;
 

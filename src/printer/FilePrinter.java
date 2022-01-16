@@ -1,6 +1,6 @@
-package Printer;
+package printer;
 
-import server.Check;
+import server.todo.Check;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,7 +24,6 @@ public class FilePrinter implements Printer{
     public void print(Check check) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(check.toString());
-        // todo: made check getters and setters to make it printable
         File file = new File(printerPath);
         try (FileWriter writer = new FileWriter(file, true)) {
             writer.write(stringBuilder.toString());

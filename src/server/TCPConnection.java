@@ -1,4 +1,4 @@
-package server.main;
+package server;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -11,7 +11,6 @@ public class TCPConnection implements Runnable {
     private ServerSocket serverSocket = null;
     private Socket clientAccepted = null;
     private Thread t;
-//    private ScreenLogger screenLogger = ScreenLogger.getInstance();
 
     public TCPConnection(Integer port) {
         this.port = port;
@@ -22,14 +21,8 @@ public class TCPConnection implements Runnable {
     @Override
     public void run() {
         try {
-            // interface and class for requests
-            //
-            serverSocket = new ServerSocket(this.port);
-//            screenLogger.clear();
-//            screenLogger.log("server starting....");
-//            screenLogger.log("at IP=" + InetAddress.getLocalHost().getHostAddress());
-//            screenLogger.log("at port=" + serverSocket.getLocalPort());
 
+            serverSocket = new ServerSocket(this.port);
             System.out.println("server starting....");
             System.out.println("at IP=" + InetAddress.getLocalHost().getHostAddress());
             System.out.println("at port=" + serverSocket.getLocalPort());

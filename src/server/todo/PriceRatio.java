@@ -1,4 +1,4 @@
-package server;
+package server.todo;
 
 import java.math.BigDecimal;
 

@@ -1,9 +1,8 @@
-package server.main;
-import cinema.model.Session;
+package server;
+
 
 class Server {
     public static void main(String args[]) {
-        Session session;
 
 //        SwingUtilities.invokeLater(() -> {
 //            JFrame frame = new ServerTerminal();
@@ -11,6 +10,7 @@ class Server {
 //            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //            frame.setVisible(true);
 //        });
+
         TCPConnection connection = new TCPConnection(2525);
     }
 }

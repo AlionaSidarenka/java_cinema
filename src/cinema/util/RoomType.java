@@ -1,4 +1,4 @@
-package server.room;
+package cinema.util;
 
 public enum RoomType {
     A, B

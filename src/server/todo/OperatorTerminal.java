@@ -1,4 +1,4 @@
-package server;
+package server.todo;
 
 import cinema.model.Seat;
 import cinema.model.Session;
