@@ -47,7 +47,7 @@ public class APIService {
                     Response response = new Response("Ok", "session was successfully updated");
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("deleteSession")) {
-                    sessionsOperations.delete((String) request.getParams().get("date"));
+                    sessionsOperations.delete((Session)request.getData());
                     Response response = new Response("Ok", "session was successfully updated");
                     objectOutputStream.writeObject(response);
                 }
@@ -60,11 +60,8 @@ public class APIService {
             Response response = new Response("NOT OK", e.getMessage());
             try {
                 objectOutputStream.writeObject(response);
-                request = (Request) objectInputStream.readObject();
             } catch (IOException err) {
                 err.printStackTrace();
-            } catch (ClassNotFoundException classNotFoundException) {
-                classNotFoundException.printStackTrace();
             }
 
         } catch (ClassNotFoundException e) {

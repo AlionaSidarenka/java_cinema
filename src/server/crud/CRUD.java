@@ -10,5 +10,5 @@ public interface CRUD <T> {
     T read(String name) throws FileNotFoundException, JAXBException;
     List<T> readList(String name) throws FileNotFoundException, JAXBException;
     void update(T t) throws FileNotFoundException, JAXBException;
-    void delete(String name) throws FileNotFoundException;
+    void delete(T t) throws FileNotFoundException;
 }
