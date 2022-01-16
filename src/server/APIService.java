@@ -11,7 +11,6 @@ import server.crud.session.CRUDSession;
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.Socket;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class APIService {
@@ -92,8 +91,4 @@ public class APIService {
         }
     }
 
-    private String getFileName(Session session) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-DD HH-mm");
-        return session.getStartDateTime().format(dtf);
-    }
 }
