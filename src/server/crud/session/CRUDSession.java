@@ -1,6 +1,7 @@
 package server.crud.session;
 
 import cinema.model.Session;
+import lombok.NoArgsConstructor;
 import server.crud.CRUD;
 
 import javax.xml.bind.JAXBContext;
@@ -8,22 +9,17 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@NoArgsConstructor
 public class CRUDSession implements CRUD<Session> {
     private static final String SESSIONS_PATH = "src" + File.separator + "resources" + File.separator + "sessions" + File.separator;
     private static final String FILE_PATTERN = "YYYY-MM-DD HH-mm";
-
-    public CRUDSession() {
-    }
-
-    public String getSessionsPath() {
-        return SESSIONS_PATH;
-    }
 
     @Override
     public void create(Session session) throws SessionExistsException, JAXBException {
@@ -52,8 +48,29 @@ public class CRUDSession implements CRUD<Session> {
         return session;
     }
 
+    @Override
+    // name pattern "2022-12-03"
+    public List<Session> readList(String name) throws FileNotFoundException, JAXBException {
+        File dir = new File(SESSIONS_PATH);
+        File[] listFiles = dir.listFiles(new MyFileNameFilter(name));
+        List<Session> sessions = new ArrayList<>();
+        JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        Arrays.stream(listFiles).forEach(file -> {
+//            sessions.add(new Session(RoomFactory.getInstance().getRoom(RoomType.A), MovieFactory.getMovie(), LocalDateTime.now()));
+            try {
+                sessions.add((Session) jaxbUnmarshaller.unmarshal(file));
+
+            } catch (JAXBException e) {
+                e.printStackTrace();
+            }
+        });
+        return sessions;
+    }
+
 
     // name pattern "2022-12-03"
+    @Deprecated
     public List<Session> readByDay(String name) throws SessionNotFoundException, JAXBException {
         File dir = new File(SESSIONS_PATH);
         File[] listFiles = dir.listFiles(new MyFileNameFilter(name));
@@ -104,18 +121,20 @@ public class CRUDSession implements CRUD<Session> {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern(FILE_PATTERN);
         return session.getStartDateTime().format(dtf);
     }
-}
 
-class MyFileNameFilter implements FilenameFilter {
+    static class MyFileNameFilter implements FilenameFilter {
 
-    private final String filePattern;
+        private final String filePattern;
 
-    public MyFileNameFilter(String filePattern) {
-        this.filePattern = filePattern.toLowerCase();
+        public MyFileNameFilter(String filePattern) {
+            this.filePattern = filePattern.toLowerCase();
+        }
+
+        @Override
+        public boolean accept(File dir, String name) {
+            return name.toLowerCase().startsWith(filePattern);
+        }
     }
 
-    @Override
-    public boolean accept(File dir, String name) {
-        return name.toLowerCase().startsWith(filePattern);
-    }
 }
+
