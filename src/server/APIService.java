@@ -11,6 +11,7 @@ import server.crud.session.CRUDSession;
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.Socket;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class APIService {
@@ -42,18 +43,26 @@ public class APIService {
                     Response<List<Session>> response = new Response("ok", "sessions was send", sessions);
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("addSession")) {
-                    sessionsOperations.create((Session)request.getData());
+                    sessionsOperations.create((Session) request.getData());
                     Response response = new Response("Ok", "session was successfully added");
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("updateSession")) {
-                    sessionsOperations.update((Session)request.getData());
+
+                    List<Session> sessions = (List<Session>) request.getData();
+                    if (sessions.size() == 2) {
+                        sessionsOperations.delete(sessions.get(1));
+                        sessionsOperations.create(sessions.get(0));
+                    } else {
+                        sessionsOperations.update(sessions.get(0));
+                    }
+
                     Response response = new Response("Ok", "session was successfully updated");
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("deleteSession")) {
-                    sessionsOperations.delete((Session)request.getData());
+                    sessionsOperations.delete((Session) request.getData());
                     Response response = new Response("Ok", "session was successfully updated");
                     objectOutputStream.writeObject(response);
-                } else  if (request.getUrl().equals("getMovies")) {
+                } else if (request.getUrl().equals("getMovies")) {
                     List<Movie> movies = movieOperations.readList("");
                     Response<List<Session>> response = new Response("ok", "sessions was send", movies);
                     objectOutputStream.writeObject(response);
@@ -81,5 +90,10 @@ public class APIService {
                 err.printStackTrace();
             }
         }
+    }
+
+    private String getFileName(Session session) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("YYYY-MM-DD HH-mm");
+        return session.getStartDateTime().format(dtf);
     }
 }

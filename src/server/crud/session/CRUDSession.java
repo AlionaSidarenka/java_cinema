@@ -106,7 +106,6 @@ public class CRUDSession implements CRUD<Session> {
     public void delete(Session session) throws SessionNotFoundException {
         String fileName = getFileName(session);
         File file = getFileOrThrowNotFound(fileName);
-
         file.delete();
     }
 
