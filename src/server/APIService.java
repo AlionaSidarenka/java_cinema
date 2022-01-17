@@ -46,16 +46,15 @@ public class APIService {
                     Response response = new Response("Ok", "session was successfully added");
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("updateSession")) {
-
+                    Response response;
                     List<Session> sessions = (List<Session>) request.getData();
                     if (sessions.size() == 2) {
                         sessionsOperations.delete(sessions.get(1));
-                        sessionsOperations.create(sessions.get(0));
+                        response = sessionsOperations.create(sessions.get(0));
                     } else {
-                        sessionsOperations.update(sessions.get(0));
+                        response = sessionsOperations.update(sessions.get(0));
                     }
 
-                    Response response = new Response("Ok", "session was successfully updated");
                     objectOutputStream.writeObject(response);
                 } else if (request.getUrl().equals("deleteSession")) {
                     sessionsOperations.delete((Session) request.getData());

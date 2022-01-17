@@ -1,5 +1,6 @@
 package server.crud.session;
 
+import cinema.connection.Response;
 import cinema.model.Session;
 import lombok.NoArgsConstructor;
 import server.crud.CRUD;
@@ -22,20 +23,30 @@ public class CRUDSession implements CRUD<Session> {
     private static final String FILE_PATTERN = "YYYY-MM-DD HH-mm";
 
     @Override
-    public void create(Session session) throws SessionExistsException, JAXBException {
+    public Response create(Session session) {
 
         String fileName = getFileName(session);
         File file = new File(SESSIONS_PATH + fileName + ".xml");
+        Response response;
 
         if (file.exists()) {
-            throw new SessionExistsException("\"" + fileName + "\"", null, "Такая сессия уже существует");
+            response = this.update(session);
         } else {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            // output pretty printed
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            jaxbMarshaller.marshal(session, file);
+            try {
+                JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
+                Marshaller jaxbMarshaller = null;
+                jaxbMarshaller = jaxbContext.createMarshaller();
+                // output pretty printed
+                jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+                jaxbMarshaller.marshal(session, file);
+                response = new Response("Ok", "session was successfully created");
+            } catch (JAXBException e) {
+                e.printStackTrace();
+                response = new Response("NOT OK", "session was not created");
+            }
         }
+
+        return response;
     }
 
     @Override
@@ -91,15 +102,21 @@ public class CRUDSession implements CRUD<Session> {
 
 
     @Override
-    public void update(Session session) throws SessionNotFoundException, JAXBException {
+    public Response update(Session session) {
         String fileName = getFileName(session);
-        File file = getFileOrThrowNotFound(fileName);
+        try {
+            File file = getFileOrThrowNotFound(fileName);
 
-        JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
-        Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-        // output pretty printed
-        jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        jaxbMarshaller.marshal(session, file);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Session.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(session, file);
+
+            return new Response("Ok", "session was successfully updated");
+        } catch (SessionNotFoundException | JAXBException e) {
+            return new Response("NOT OK", "session was not updated");
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package server.crud.movie;
 
+import cinema.connection.Response;
 import cinema.model.Movie;
 import lombok.NoArgsConstructor;
 import server.crud.CRUD;
@@ -19,7 +20,7 @@ public class CRUDMovie implements CRUD<Movie> {
     private static final String MOVIES_PATH = "src" + File.separator + "resources" + File.separator + "movies" + File.separator;
 
     @Override
-    public void create(Movie movie) throws MovieExistsException, JAXBException {
+    public Response create(Movie movie) throws MovieExistsException, JAXBException {
         File file = new File(MOVIES_PATH + movie.getTitle() + ".xml");
         if (file.exists()) {
             throw new MovieExistsException("\"" + movie.getTitle() + "\"", null, "Такой фильм уже существует");
@@ -31,6 +32,8 @@ public class CRUDMovie implements CRUD<Movie> {
             jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             jaxbMarshaller.marshal(movie, file);
         }
+
+        return new Response("Ok", "movie was successfully created");
     }
 
     @Override
@@ -64,13 +67,15 @@ public class CRUDMovie implements CRUD<Movie> {
     }
 
     @Override
-    public void update(Movie movie) throws MovieNotFoundException, JAXBException {
+    public Response update(Movie movie) throws MovieNotFoundException, JAXBException {
         File file = getFileOrThrowNotFound(movie.getTitle());
 
         JAXBContext jaxbContext = JAXBContext.newInstance(Movie.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         // Movie movie = (Movie) jaxbUnmarshaller.unmarshal(file);
         // return movie;
+
+        return new Response("Ok", "movie was successfully updated");
     }
 
     @Override

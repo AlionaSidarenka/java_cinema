@@ -48,13 +48,7 @@ public class Test {
         LocalDateTime startDateTime = LocalDateTime.now();
         int hour = 0;
         for (int i = 0; i < 10; i++) {
-            try {
-                crud.create(new Session(RoomFactory.getInstance().getRoom(RoomType.B), MovieFactory.getMovie(), startDateTime.plusHours(hour++)));
-            } catch (SessionExistsException e) {
-                e.printStackTrace();
-            } catch (JAXBException e) {
-                e.printStackTrace();
-            }
+            crud.create(new Session(RoomFactory.getInstance().getRoom(RoomType.B), MovieFactory.getMovie(), startDateTime.plusHours(hour++)));
         }
     }
 
